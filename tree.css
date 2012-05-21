@@ -1,0 +1,66 @@
+.gallery {
+  margin: auto;
+  border: dashed 1px navy;
+  width: auto;
+  height: auto;
+  background: #f2f2f2;
+}
+
+.nodeok circle {
+  fill: #00cc00;
+  stroke: #666666;
+  stroke-width: 1.5px;
+}
+
+.nodewarning circle {
+  fill: yellow;
+  stroke: #666666;
+  stroke-width: 1.5px;
+}
+
+.nodecritical circle {
+  fill: red;
+  stroke: #666666;
+  stroke-width: 1.5px;
+}
+
+.nodeunknown circle {
+  fill: orange;
+  stroke: #666666;
+  stroke-width: 1.5px;
+}
+
+body {
+  font: 10px sans-serif;
+}
+
+.linkup {
+  fill: none;
+  stroke: #00cc00;
+  stroke-width: 1.5px;
+}
+
+.linkdown {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px;
+}
+
+.link {
+  fill: none;
+  stroke: #00cc00;
+  stroke-width: 2px;
+}
+
+.flapping {
+  font-weight: bold;
+  color: blue;
+}
+
+.popup {
+  fill: #f4f4f4;
+  fill-opacity: 0.75;
+  stroke: #9a9a9a;
+  stroke-opacity: 0.75;
+  stroke-width: 1.5px;
+}

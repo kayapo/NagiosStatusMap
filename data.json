@@ -1,0 +1,361 @@
+{
+    "name": "manage", "size": 10, "status": "ok", "link": "up",
+    "children": [
+        {
+            "name": "vpn1", "size": 10, "status": "ok", "link": "up",
+            "children": [
+                {
+                    "name": "lvs1.int.oc.hu", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "www1.int.oc.hu", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "www3.int.oc.hu", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "sql01.int.oc.hu", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "sql02.int.oc.hu", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "dev.int.oc.hu", "size": 10, "status": "warning", "link": "up"
+                        },
+                        {
+                            "name": "vm1-node1.int.oc.hu", "size": 10, "status": "ok", "link": "up"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "defaultgw", "size": 10, "status": "ok", "link": "up",
+            "children": [
+                {
+                    "name": "DATANET", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "FRBalatonlelle", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRBudakeszi", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRBudaors", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRDebrecen", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRDebrecen2", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRDunaharaszti", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRErd", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRGyor", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRI", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRII", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRIIA", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRIII", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRIIISatBekasm", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRIIISatCsillaghegy", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRIISat", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRIV", "size": 10, "status": "ok", "link": "up",
+                            "children": [
+                                {
+                                    "name": "frfs12", "size": 10, "status": "ok", "link": "up"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "FRKaposvar", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRPilisvorosvar", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRSiofok", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRSolymar", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRSzekesfehervar", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRSzentendre", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRTata", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRTatabanya", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRV", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXI", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXIMaros", "size": 10, "status": "ok", "link": "up",
+                            "children": [
+                                {
+                                    "name": "frfs10", "size": 10, "status": "ok", "link": "up"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "FRXII", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXIISatPozsonyiU", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXVII", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXVIII", "size": 10, "status": "ok", "link": "up",
+                            "children": [
+                                {
+                                    "name": "frfs02", "size": 10, "status": "ok", "link": "up"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "FRXVIIISat", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXX", "size": 10, "status": "ok", "link": "up"
+                        }
+                    ]
+                },
+                {
+                    "name": "IEC", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "FRGyomro", "size": 10, "status": "critical", "link": "down"
+                        }
+                    ]
+                },
+                {
+                    "name": "UPC", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "FRIX", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRMiskolc", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRPecel", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRVII", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRVIII", "size": 10, "status": "ok", "link": "up",
+                            "children": [
+                                {
+                                    "name": "frfs03", "size": 10, "status": "ok", "link": "up"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "FRVIISat", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXIIISatBekeU", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXIIISatVesoUt", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXIVSat", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "PR-Sasadliget-UPC", "size": 10, "status": "ok", "link": "up"
+                        }
+                    ]
+                },
+                {
+                    "name": "T-ONLINE", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "FRBekescsaba", "size": 10, "status": "critical", "link": "down"
+                        },
+                        {
+                            "name": "FRKecskemet2", "size": 10, "status": "critical", "link": "down"
+                        },
+                        {
+                            "name": "FRPecs", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRPecs2", "size": 10, "status": "critical", "link": "down"
+                        },
+                        {
+                            "name": "FRSopron", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRSzolnok", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXVI", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXVISat", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXXII", "size": 10, "status": "ok", "link": "up"
+                        }
+                    ]
+                },
+                {
+                    "name": "INVITEL", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "FRBicske", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRDunakeszi", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRGod", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRGodolo", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRKecskemet", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRSzeged", "size": 10, "status": "ok", "link": "up",
+                            "children": [
+                                {
+                                    "name": "frfs11", "size": 10, "status": "ok", "link": "up"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "FRSzombathely", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRVac", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXIEteleut", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRXIII", "size": 10, "status": "ok", "link": "up"
+                        }
+                    ]
+                },
+                {
+                    "name": "MVM", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "FRSzarvas", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRVI-Outca-Communique", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRVISat", "size": 10, "status": "ok", "link": "up"
+                        }
+                    ]
+                },
+                {
+                    "name": "DIGICABLE", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "FR6Liszt", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FR6LisztFerencBackoffice3eme", "size": 10, "status": "ok", "link": "up"
+                        },
+                        {
+                            "name": "FRX", "size": 10, "status": "ok", "link": "up"
+                        }
+                    ]
+                },
+                {
+                    "name": "DENINET", "size": 10, "status": "ok", "link": "up",
+                    "children": [
+                        {
+                            "name": "FRLenti", "size": 10, "status": "ok", "link": "up"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "app.hiper.oc.hu", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "sql.hiper.oc.hu", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "report.hiper.oc.hu", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "gyakorlo.hiper.oc.hu", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "taurus", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "backup02", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "mail.oc.hu", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "mail2.oc.hu", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "mx.oc.hu", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "goliat", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "srv01", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "srv02", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "srv03", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "srv04", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "srv05", "size": 10, "status": "ok", "link": "up"
+        },
+        {
+            "name": "srv07", "size": 10, "status": "ok", "link": "up"
+        }
+    ]
+}
