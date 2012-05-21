@@ -45,7 +45,14 @@ d3.json("data.json", function(json) {
 var svg = d3.select("#chart").select("svg");
 
 showstatus = function(d, i) {
+  var popupWidth = 240;
+  var popupHight = 40;
+  
   var mp = d3.mouse(svg[0][0]);
+  
+  popupX = ( mp[0] + popupWidth < radius * 2 ? mp[0] + 5 : mp[0] - popupWidth - 10 );
+  popupY = ( mp[1] + popupHight < radius * 2 ? mp[1] + 5 : mp[1] - popupHight - 10 );
+  
   if ( svg.select("rect") )
       svg.select("rect").remove();
       
@@ -53,18 +60,18 @@ showstatus = function(d, i) {
       svg.select(( "#pt" + i )).remove();
 
   svg.append("rect")
-      .attr("x", (mp[0] + 5))
-      .attr("y", (mp[1] + 5))
+      .attr("x", popupX)
+      .attr("y", popupY)
       .attr("rx", 10)
       .attr("ry", 10)
-      .attr("width", 240)
-      .attr("height", 40)
+      .attr("width", popupWidth)
+      .attr("height", popupHight)
       .attr("class", "popup");
 
   svg.append("text")
       .attr("id", ( "pt" + i ))
-      .attr("x", (mp[0] + 15))
-      .attr("y", (mp[1] + 20))
+      .attr("x", popupX + 10)
+      .attr("y", popupY + 15)
       .attr("text-anchor", "start")
       .text(d.name);
 }
