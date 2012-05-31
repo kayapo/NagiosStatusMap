@@ -11,4 +11,16 @@ class Config:
         'tableprefix': 'nagios_'
     }
     
+    # Loging level
     loglevel = 0
+
+    # Maximum size of circle on map
+    mapObjMaxSize = 10
+    
+    # Map object enlarge factor
+    # set to one (default value is 2.5)
+    # for normal size
+    mapObjEnlargeFactor = 2.5
+    
+    #
+    hostAliveCheckName = 'check-host-alive'

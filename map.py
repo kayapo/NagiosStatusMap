@@ -86,9 +86,9 @@ class setup():
         dbName = self.identifiString(self.Conf.MySQLconnector["database"])
         return dbName
 
-    def getMySQLtable(self):
+    def getMySQLtable(self, tblname = ''):
         """Return the reformated log table name"""
-        tblName = self.identifiString(self.Conf.MySQLconnector["table"])
+        tblName = self.identifiString(self.Conf.MySQLconnector["tableprefix"]) + tblname
         return tblName
 
     def getLogLevel(self):
@@ -147,14 +147,128 @@ class db():
             return -1
         else:
             return resoult_set
-        
 
-
-def index():
-    SET = setup()
-    dbObj = db(SET.getMySQLhost(), SET.getMySQLuser(), SET.getMySQLpassword(), SET.getMySQLdatabase())
-    dbConn = dbObj.connector()
+class map():
+    # Containing all setup parameters
+    SET = object
     
-    L = log(0,0, "nagios-status-map")
+    # Database represent object
+    dbObj = object
+    # DB connectivity pointer
+    dbConn = object
 
-    return "Map start"
+    # syslog connectivity object
+    L = log(0,0,'nagios-map')
+
+    def __init__(self):
+        # Loading setup
+        self.SET = setup()
+
+        # Connect to the database
+        self.dbObj = db(self.SET.getMySQLhost(), self.SET.getMySQLuser(), self.SET.getMySQLpassword(), self.SET.getMySQLdatabase())
+        self.dbConn = self.dbObj.connector()
+        self.L.logger('map init')
+
+    def __del__(self):
+        
+        return
+
+    def allHosts(self):
+        """Returns list of hashes contains hostnames and our id's"""
+        hosts = self.dbObj.runQuery(self.dbConn, 'SELECT host_object_id AS id, display_name AS name FROM nagios_hosts;')
+        return hosts
+
+    def getMapObjectSize(self, nagiosObjectId):
+        """Calculate map object size from number of hosts service checks number"""
+        obj_size = self.dbObj.runQuery(self.dbConn, 'SELECT COUNT(*) * %i AS size FROM ndoutils.nagios_services WHERE host_object_id =  %i' % (self.SET.Conf.mapObjEnlargeFactor, nagiosObjectId))
+        return int(obj_size[0]['size'])
+
+    def checkSuperParent(self, nagiosObjectId):
+        """Returns number of parents for super parent host"""
+        Q = 'SELECT COUNT(*) AS num FROM nagios_host_parenthosts WHERE host_id = (SELECT host_id FROM nagios_hosts WHERE host_object_id = %i);' % nagiosObjectId
+        # self.L.logger('SQL QUERY: %s' % Q)
+        host_num = self.dbObj.runQuery(self.dbConn, Q)
+        return host_num[0]['num']
+
+    def checkChildsNum(self, nagiosObjectId):
+        """Returns number of parents"""
+        Q = 'SELECT COUNT(*) AS num FROM nagios_host_parenthosts WHERE parent_host_object_id = %i' % nagiosObjectId
+        # self.L.logger('SQL QUERY: %s' % Q)
+        host_num = self.dbObj.runQuery(self.dbConn, Q)
+        return host_num[0]['num']
+
+    def getObjectName(self, nagiosObjectId):
+        """Returns with object name"""
+        Q = 'SELECT name1 AS name FROM nagios_objects WHERE object_id = %i' % nagiosObjectId
+        # self.L.logger('SQL QUERY: %s' % Q)
+        host_name = self.dbObj.runQuery(self.dbConn, Q)
+        return str(host_name[0]['name'])
+
+    def getHostLinkState(self, nagiosObjectId):
+        """Returns with network lint state"""
+        link = "down"
+        Q = "SELECT state FROM map_host_alive WHERE host_id = %i;" % nagiosObjectId
+        # self.L.logger('SQL QUERY: %s' % Q)
+        aliveState = self.dbObj.runQuery(self.dbConn, Q)
+        if len(aliveState) > 0:
+            if aliveState[0]['state'] == 0:
+                link = "up"
+        else:
+            link = "up"
+        return link
+
+    def generateMapTree(self, superParent):
+        tree = { 'children': list() }
+        childs = self.dbObj.runQuery(self.dbConn, 'SELECT nh.host_object_id AS child_host_id FROM nagios_host_parenthosts nhp JOIN nagios_hosts nh ON nh.host_id = nhp.host_id WHERE parent_host_object_id = %i;' % superParent)
+        if len(childs) > 0:
+            for child in childs:
+                if self.checkChildsNum(child['child_host_id']) > 0:
+                    self.L.logger( "ParentName: %s, childnum: %i" % ( self.getObjectName(child['child_host_id']),self.checkSuperParent(child['child_host_id']) ))
+                    tree['children'].append( {
+                                                'name': self.getObjectName(child['child_host_id']),
+                                                'size': self.getMapObjectSize(child['child_host_id']),
+                                                'link': self.getHostLinkState(child['child_host_id']),
+                                                'children': self.generateMapTree(child['child_host_id'])['children']
+                                              } )
+                else:
+                    self.L.logger("No existent child host")
+                    tree['children'].append( {
+                                                'name': self.getObjectName(child['child_host_id']),
+                                                'link': self.getHostLinkState(child['child_host_id']),
+                                                'size': self.getMapObjectSize(child['child_host_id'])
+                                              } )
+            
+        return tree
+    
+def index(req):
+    req.content_type = 'application/json'
+    resultSet = dict()
+    # syslog connectivity object
+    L = log(0,0,'nagios-map')
+
+    # MAP object
+    MAP = map()
+    
+    # List of all nagios host names and ids
+    hosts = MAP.allHosts()
+    
+    # Search superparent(s) hosts
+    for host in hosts:
+        if MAP.checkSuperParent(host['id']) < 1:
+            L.logger("Super parent host: %i. %s" % (host['id'], host['name']))
+            resultSet = {'name': host['name'], 'size': MAP.getMapObjectSize(host['id']), 'children': MAP.generateMapTree(host['id'])['children'] }
+            
+    
+    return resultSet
+
+"""
+CREATE  TABLE `ndoutils`.`map_host_service_status` (
+  `id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `host_object_id` MEDIUMINT UNSIGNED NULL ,
+  `service_object_id` MEDIUMINT UNSIGNED NULL ,
+  `status` MEDIUMINT UNSIGNED NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = MEMORY
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+"""
