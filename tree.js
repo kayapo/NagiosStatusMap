@@ -14,7 +14,7 @@ var vis = d3.select("#chart").append("svg")
     .append("g")
     .attr("transform", "translate(" + radius + "," + radius + ")");
 
-d3.json("data.json", function(json) {
+d3.json("map.py", function(json) {
   nodes = tree.nodes(json);
 
   var link = vis.selectAll("path.link")
@@ -30,7 +30,7 @@ d3.json("data.json", function(json) {
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
 
   node.append("circle")
-      .attr("r", function(d) { return ( d.size / 2.25 ) })
+      .attr("r", function(d) { return ( d.size ) })
       .on("mousemove", showstatus)
       .on("mouseout", hidestatus);
 

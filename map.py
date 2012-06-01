@@ -8,6 +8,7 @@ import re
 import sys
 import os
 import MySQLdb
+import json
 
 class log():
     """
@@ -180,8 +181,16 @@ class map():
 
     def getMapObjectSize(self, nagiosObjectId):
         """Calculate map object size from number of hosts service checks number"""
+        size = 4
         obj_size = self.dbObj.runQuery(self.dbConn, 'SELECT COUNT(*) * %i AS size FROM ndoutils.nagios_services WHERE host_object_id =  %i' % (self.SET.Conf.mapObjEnlargeFactor, nagiosObjectId))
-        return int(obj_size[0]['size'])
+        if int(obj_size[0]['size']) > 20:
+            size = 20
+        elif int(obj_size[0]['size']) < 20 and int(obj_size[0]['size']) > 4:
+            size = int(obj_size[0]['size'])
+        elif int(obj_size[0]['size']) < 4:
+            size = 4
+        
+        return size
 
     def checkSuperParent(self, nagiosObjectId):
         """Returns number of parents for super parent host"""
@@ -216,9 +225,41 @@ class map():
         else:
             link = "up"
         return link
+    
+    def getHostServicesState(self, nagiosObjectId):
+        """Returns weighted state of services"""
+        hostState = 0
+        hostFlapping = 0
+        Q = """SELECT ns.display_name, nss.current_state AS state, nss.is_flapping
+               FROM nagios_services ns JOIN nagios_servicestatus nss
+               ON ns.service_object_id = nss.service_object_id
+               WHERE ns.host_object_id = %i""" % nagiosObjectId
+        # self.L.logger('SQL QUERY: %s' % Q)
+        weightedServiceState = self.dbObj.runQuery(self.dbConn, Q)
+        for service in weightedServiceState:
+            if service['state'] == 0 and hostState < 1:
+                hostState = 0
+            
+            if service['state'] == 1 and hostState < 2:
+                hostState = 1
+            
+            if service['state'] == 2 and hostState < 3:
+                hostState = 2
+            
+            if service['state'] == 3 and hostState < 1:
+                hostState = 3
+            
+            if service['state'] == 4 and hostState < 1:
+                hostState = 4
+            
+            if service['is_flapping'] == 1 and hostFlapping == 0:
+                hostFlapping = 0
+        
+        return { 'status': hostState, 'flapping': hostFlapping }
 
     def generateMapTree(self, superParent):
         tree = { 'children': list() }
+        nagiosStates = ['ok', 'warning', 'critical', 'unknown', 'dependant']
         childs = self.dbObj.runQuery(self.dbConn, 'SELECT nh.host_object_id AS child_host_id FROM nagios_host_parenthosts nhp JOIN nagios_hosts nh ON nh.host_id = nhp.host_id WHERE parent_host_object_id = %i;' % superParent)
         if len(childs) > 0:
             for child in childs:
@@ -228,14 +269,16 @@ class map():
                                                 'name': self.getObjectName(child['child_host_id']),
                                                 'size': self.getMapObjectSize(child['child_host_id']),
                                                 'link': self.getHostLinkState(child['child_host_id']),
-                                                'children': self.generateMapTree(child['child_host_id'])['children']
+                                                'children': self.generateMapTree(child['child_host_id'])['children'],
+                                                'status': nagiosStates[self.getHostServicesState(child['child_host_id'])['status']]
                                               } )
                 else:
                     self.L.logger("No existent child host")
                     tree['children'].append( {
                                                 'name': self.getObjectName(child['child_host_id']),
                                                 'link': self.getHostLinkState(child['child_host_id']),
-                                                'size': self.getMapObjectSize(child['child_host_id'])
+                                                'size': self.getMapObjectSize(child['child_host_id']),
+                                                'status': nagiosStates[self.getHostServicesState(child['child_host_id'])['status']]
                                               } )
             
         return tree
@@ -259,16 +302,5 @@ def index(req):
             resultSet = {'name': host['name'], 'size': MAP.getMapObjectSize(host['id']), 'children': MAP.generateMapTree(host['id'])['children'] }
             
     
-    return resultSet
+    return json.dumps(resultSet, indent=2, sort_keys=False)
 
-"""
-CREATE  TABLE `ndoutils`.`map_host_service_status` (
-  `id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `host_object_id` MEDIUMINT UNSIGNED NULL ,
-  `service_object_id` MEDIUMINT UNSIGNED NULL ,
-  `status` MEDIUMINT UNSIGNED NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = MEMORY
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
-"""
